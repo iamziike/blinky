@@ -1,0 +1,7 @@
+{
+  "author": "iamziike",
+  "manifest_version": 3,
+  "name": "Blinky",
+  "description": "An extension that reminds you to blink you eyes when using your browser",
+  "version": "1.0.0"
+}
