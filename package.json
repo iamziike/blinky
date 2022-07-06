@@ -2,6 +2,11 @@
   "name": "blinky",
   "version": "1.0.0",
   "description": "A Browser Extension that reminds you to blink you eyes when using your browser",
+  "scripts": {
+    "clear": "rm -rf .parcel-cache dist",
+    "start": "npm run clear && parcel watch source/manifest.json",
+    "build": "parcel build source/manifest.json"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iamziike/blinky.git"
