@@ -17,5 +17,6 @@
     "16": "./assets/logo.png",
     "48": "./assets/logo.png",
     "128": "./assets/logo.png"
-  }
+  },
+  "permissions": ["storage"]
 }

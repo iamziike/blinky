@@ -1,41 +1,34 @@
-// import { useState } from "react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import Setting from "../../../assets/settings.svg";
+import useStore from "../../store/useStore";
+import Elevator from "../../commons/components/Elevator/Elevator";
+import SettingIcon from "../../../assets/settings.svg";
+import ComponentEntry from "../../commons/components/ComponentEntry/ComponentEntry";
 import Icon from "../../commons/components/Icon/Icon";
+import { NumberString, ToastPosition } from "../../types/types";
 
 const StyledSidebar = styled.div`
+  position: relative;
   display: flex;
   justify-content: flex-end;
   padding: ${({ theme }) => theme.spacing.xsm};
 `;
 
-const StyledIcon = styled(Icon)<{ isOpen: boolean }>`
-  position: relative;
-  z-index: 100;
-
-  * {
-    transition: fill 0.5s;
-    fill: ${({ isOpen, theme }) =>
-      isOpen ? theme.colors.yellow : theme.colors.black};
+const StyledComponentEntry = styled(ComponentEntry)`
+  svg {
+    fill: ${({ theme }) => theme.colors.yellow};
   }
 `;
 
-const StyledActions = styled.ul<{ isOpen: boolean }>`
+const StyledActions = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  position: fixed;
   color: ${({ theme }) => theme.colors.yellow};
   background-color: ${({ theme }) => theme.colors.black};
-  top: 0;
-  width: 100%;
-  height: 100%;
-  left: ${({ isOpen }) => (isOpen ? 0 : "100%")};
-  transition: left 0.5s;
   padding: ${({ theme }) => theme.spacing.xsm};
 
   li {
@@ -62,23 +55,101 @@ const StyledActions = styled.ul<{ isOpen: boolean }>`
   }
 `;
 
+const StyledElevator = styled(Elevator)<{ currentValueClassName?: string }>`
+  color: ${({ theme }) => theme.colors.yellow};
+  background-color: ${({ theme }) => theme.colors.black};
+
+  .currentValueClassName {
+    font-size: 2rem;
+  }
+`;
+
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [settingsTypeOpen, setSettingsTypeOpen] = useState<
+    "interval" | "popup-position" | null
+  >(null);
+
+  const { getStore, setPopupInterval, setToastPosition } = useStore();
+  const { popupInterval, toastPosition } = getStore();
+
+  const toastPositions = [
+    "bottom-left",
+    "bottom-right",
+    "center",
+    "center-left",
+    "center-right",
+    "top-left",
+    "top-right",
+  ].map((position, index) => ({
+    value: position,
+    id: position,
+    /* if toastPosition is not set it will default with index 0 */
+    isSelected: toastPosition ? toastPosition === position : index === 0,
+  }));
 
   const handleSideBarVisibility = () => {
-    setIsOpen((prev) => !prev);
+    setIsSidebarOpen((prev) => !prev);
+  };
+
+  const handlePopupIntervalIncrement = () => {
+    setPopupInterval((prev) => prev && prev + 1);
+  };
+
+  const handlePopupIntervalDecrement = () => {
+    setPopupInterval((prev) => prev && (prev === 1 ? prev : prev - 1));
+  };
+
+  const handleToastPositionSelection = (value: NumberString) => {
+    setToastPosition(value as ToastPosition);
   };
 
   return (
     <StyledSidebar>
-      <StyledIcon isOpen={isOpen} onClick={handleSideBarVisibility}>
-        <Setting />
-      </StyledIcon>
-      <StyledActions isOpen={isOpen}>
-        <li>Interval</li>
-        <li>Popup Position</li>
-        {/* <StyledAction>Issues</StyledAction> */}
-      </StyledActions>
+      <Icon onClick={handleSideBarVisibility}>
+        <SettingIcon />
+      </Icon>
+      <StyledComponentEntry
+        isOpen={isSidebarOpen}
+        onClose={handleSideBarVisibility}
+      >
+        <StyledActions>
+          <li onClick={() => setSettingsTypeOpen("interval")}>Interval</li>
+          <li onClick={() => setSettingsTypeOpen("popup-position")}>
+            Popup Position
+          </li>
+        </StyledActions>
+      </StyledComponentEntry>
+      <StyledComponentEntry
+        isOpen={settingsTypeOpen === "interval"}
+        onClose={() =>
+          setSettingsTypeOpen((prev) =>
+            prev === "interval" ? null : "interval"
+          )
+        }
+        iconType="go back"
+      >
+        <StyledElevator
+          currentValue={popupInterval + "s"}
+          onGetNextValue={handlePopupIntervalIncrement}
+          onGetPrevValue={handlePopupIntervalDecrement}
+        />
+      </StyledComponentEntry>
+      <StyledComponentEntry
+        isOpen={settingsTypeOpen === "popup-position"}
+        onClose={() =>
+          setSettingsTypeOpen((prev) =>
+            prev === "popup-position" ? null : "popup-position"
+          )
+        }
+        iconType="go back"
+      >
+        <StyledElevator
+          items={toastPositions}
+          onGetFocusedItem={handleToastPositionSelection}
+          currentValueClassName="currentValueClassName"
+        />
+      </StyledComponentEntry>
     </StyledSidebar>
   );
 };

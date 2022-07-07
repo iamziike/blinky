@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import GlobalStyles from "../../styles/GlobalStyles";
+import StoreProvider from "../../store/StoreProvider";
 import ThemingProvider from "../../styles/ThemingProvider";
 import Sidebar from "./Sidebar";
 import Main from "./Main";
@@ -20,11 +21,13 @@ const StyledApp = styled.div`
 const App = () => {
   return (
     <ThemingProvider>
-      <GlobalStyles />
-      <StyledApp>
-        <Main />
-        <Sidebar />
-      </StyledApp>
+      <StoreProvider>
+        <GlobalStyles />
+        <StyledApp>
+          <Main />
+          <Sidebar />
+        </StyledApp>
+      </StoreProvider>
     </ThemingProvider>
   );
 };
