@@ -15,19 +15,32 @@ const useStore = () => {
   const [toastPosition, setToastPosition] = useRecoilState(toastPositionAtom);
 
   useEffect(() => {
+    const popupIntervalSetter = async () => {
+      const response = (await storage.retrieve(
+        POPUP_INTERVAL_STORAGE_KEY
+      )) as number;
+      setPopupInterval(response || 4);
+    };
+
+    const toastPositionSetter = async () => {
+      const response = (await storage.retrieve(
+        POPUP_POSITION_STORAGE_KEY
+      )) as ToastPosition;
+      setToastPosition(response || "bottom-left");
+    };
+
+    // set the state existing already stored in chrome-storage
+    // subscribe to changes to your chrome-storage
+
     (async () => {
       if (!popupInterval) {
-        const response = (await storage.retrieve(
-          POPUP_INTERVAL_STORAGE_KEY
-        )) as number;
-        setPopupInterval(response || 4);
+        popupIntervalSetter();
+        storage.listenToChange(popupIntervalSetter);
       }
 
       if (!toastPosition) {
-        const response = (await storage.retrieve(
-          POPUP_POSITION_STORAGE_KEY
-        )) as ToastPosition;
-        setToastPosition(response || "bottom-left");
+        toastPositionSetter();
+        storage.listenToChange(toastPositionSetter);
       }
     })();
   }, []);
