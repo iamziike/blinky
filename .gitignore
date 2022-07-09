@@ -9,3 +9,5 @@ build
 moodboard/
 
 ignore*
+
+_rejects*

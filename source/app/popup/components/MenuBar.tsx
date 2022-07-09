@@ -8,7 +8,7 @@ import ComponentEntry from "../../commons/components/ComponentEntry/ComponentEnt
 import Icon from "../../commons/components/Icon/Icon";
 import { NumberString, ToastPosition } from "../../types/types";
 
-const StyledSidebar = styled.div`
+const StyledMenuBar = styled.div`
   position: relative;
   display: flex;
   justify-content: flex-end;
@@ -64,8 +64,8 @@ const StyledElevator = styled(Elevator)<{ currentValueClassName?: string }>`
   }
 `;
 
-const Sidebar = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+const MenuBar = () => {
+  const [isMenuBarOpen, setIsMenuBarOpen] = useState(false);
   const [settingsTypeOpen, setSettingsTypeOpen] = useState<
     "interval" | "popup-position" | "popup-screen-time" | null
   >(null);
@@ -89,8 +89,8 @@ const Sidebar = () => {
     isSelected: toastPosition ? toastPosition === position : index === 0,
   }));
 
-  const handleSideBarVisibility = () => {
-    setIsSidebarOpen((prev) => !prev);
+  const handleMenuBarVisibility = () => {
+    setIsMenuBarOpen((prev) => !prev);
   };
 
   const counterIncrement = (prev: number) => prev && prev + 1;
@@ -102,13 +102,13 @@ const Sidebar = () => {
   };
 
   return (
-    <StyledSidebar>
-      <Icon onClick={handleSideBarVisibility}>
+    <StyledMenuBar>
+      <Icon onClick={handleMenuBarVisibility}>
         <SettingIcon />
       </Icon>
       <StyledComponentEntry
-        isOpen={isSidebarOpen}
-        onClose={handleSideBarVisibility}
+        isOpen={isMenuBarOpen}
+        onClose={handleMenuBarVisibility}
       >
         <StyledActions>
           <li onClick={() => setSettingsTypeOpen("interval")}>Interval</li>
@@ -165,8 +165,8 @@ const Sidebar = () => {
           onGetPrevValue={() => setToastScreenTime(counterDecrement)}
         />
       </StyledComponentEntry>
-    </StyledSidebar>
+    </StyledMenuBar>
   );
 };
 
-export default Sidebar;
+export default MenuBar;

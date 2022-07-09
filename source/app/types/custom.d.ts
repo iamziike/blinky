@@ -3,3 +3,9 @@ declare module "*.svg" {
 
   export default ReactComponent;
 }
+
+declare module "*.gif" {
+  const path: string;
+
+  export default path;
+}
