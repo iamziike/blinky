@@ -22,15 +22,15 @@ const StyledToast = styled.div<IsOpen & { position: ToastPosition }>`
     if (position === "center")
       return "top: calc(50% - 35px); right: calc(50% - 150px);";
     if (position === "center-left")
-      return "top: calc(50% - 35px); right: calc(100% - 305px);";
+      return "top: calc(50% - 35px); right: calc(100% - 315px);";
     if (position === "center-right")
       return "top: calc(50% - 35px); right: 5px;";
-    if (position === "top-left") return "top: 5px; right: calc(100% - 305px);";
+    if (position === "top-left") return "top: 5px; right: calc(100% - 315px);";
     if (position === "top-right") return "top: 5px; right: 5px;";
     if (position === "bottom-right")
       return "top: calc(100% - 75px); right: 5px;";
     // if (position === "bottom-left")
-    return "top: calc(100% - 75px); right: calc(100% - 305px);";
+    return "top: calc(100% - 75px); right: calc(100% - 315px);";
   }};
   background-color: ${({ theme }) => theme.colors.black};
   border-radius: 5px;
