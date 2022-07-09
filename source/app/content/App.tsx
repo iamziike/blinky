@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Toast from "../commons/components/Toast/Toast";
+import { selectRandom } from "../commons/scripts/helpers";
 import useStore from "../store/useStore";
 
 const App = () => {
@@ -17,11 +18,21 @@ const App = () => {
       setTimeout(handleToastVisibility, popupInterval * 1000);
   }, [isToastOpen]);
 
+  // Intensionally did create a state
+  const toastTitle = selectRandom([
+    "Have you blinked",
+    "Remember To Blink",
+    "Try to close your eyes",
+    "Blink Blink Blink",
+    "Don't forget to Blink",
+    "Try to Blink",
+  ]);
+
   return (
     <Toast
       isOpen={isToastOpen}
       onClose={handleToastVisibility}
-      title="Have you blinked"
+      title={toastTitle}
       pauseTime={toastScreenTime}
       position={toastPosition}
     />
