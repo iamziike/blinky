@@ -5,7 +5,8 @@ import useStore from "../store/useStore";
 
 const App = () => {
   const [isToastOpen, setIsToastOpen] = useState(false);
-  const { popupInterval, toastPosition } = useStore().getStore();
+  const { popupInterval, toastPosition, toastScreenTime } =
+    useStore().getStore();
 
   const handleToastVisibility = () => {
     setIsToastOpen((prev) => !prev);
@@ -21,7 +22,7 @@ const App = () => {
       isOpen={isToastOpen}
       onClose={handleToastVisibility}
       title="Have you blinked"
-      pauseTime={3}
+      pauseTime={toastScreenTime}
       position={toastPosition}
     />
   );

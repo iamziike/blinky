@@ -4,15 +4,22 @@ import { useRecoilState } from "recoil";
 import {
   POPUP_INTERVAL_STORAGE_KEY,
   POPUP_POSITION_STORAGE_KEY,
+  POPUP_SCREEN_TIME_STORAGE_KEY,
 } from "../commons/constants";
 import storage from "../commons/scripts/storage";
 import { ToastPosition } from "../types/types";
 
-import { popupIntervalAtom, toastPositionAtom } from "./store";
+import {
+  popupIntervalAtom,
+  toastPositionAtom,
+  toastScreenTimeAtom,
+} from "./store";
 
 const useStore = () => {
   const [popupInterval, setPopupInterval] = useRecoilState(popupIntervalAtom);
   const [toastPosition, setToastPosition] = useRecoilState(toastPositionAtom);
+  const [toastScreenTime, setToastScreenTime] =
+    useRecoilState(toastScreenTimeAtom);
 
   useEffect(() => {
     const popupIntervalSetter = async () => {
@@ -29,6 +36,13 @@ const useStore = () => {
       setToastPosition(response || "bottom-left");
     };
 
+    const toastScreenTimeSetter = async () => {
+      const response = (await storage.retrieve(
+        POPUP_SCREEN_TIME_STORAGE_KEY
+      )) as number;
+      setToastScreenTime(response || 3);
+    };
+
     // set the state existing already stored in chrome-storage
     // subscribe to changes to your chrome-storage
 
@@ -41,6 +55,11 @@ const useStore = () => {
       if (!toastPosition) {
         toastPositionSetter();
         storage.listenToChange(toastPositionSetter);
+      }
+
+      if (!toastScreenTime) {
+        toastScreenTimeSetter();
+        storage.listenToChange(toastScreenTimeSetter);
       }
     })();
   }, []);
@@ -55,15 +74,22 @@ const useStore = () => {
       storage.update(POPUP_POSITION_STORAGE_KEY, toastPosition);
   }, [toastPosition]);
 
+  useEffect(() => {
+    if (toastScreenTime)
+      storage.update(POPUP_SCREEN_TIME_STORAGE_KEY, toastScreenTime);
+  }, [toastScreenTime]);
+
   const getStore = () => ({
     popupInterval,
     toastPosition,
+    toastScreenTime,
   });
 
   return {
     getStore,
     setPopupInterval,
     setToastPosition,
+    setToastScreenTime,
   };
 };
 
