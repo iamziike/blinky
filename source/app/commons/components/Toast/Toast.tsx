@@ -20,25 +20,30 @@ const StyledToast = styled.div<IsOpen & { position: ToastPosition }>`
   z-index: 10000000000;
   ${({ position }) => {
     if (position === "center")
-      return "top: calc(50% - 35px); right: calc(50% - 150px);";
+      return "top: calc(50% - 35px) !important; right: calc(50% - 150px) !important;";
     if (position === "center-left")
-      return "top: calc(50% - 35px); right: calc(100% - 315px);";
+      return "top: calc(50% - 35px) !important; right: calc(100% - 315px) !important;";
     if (position === "center-right")
-      return "top: calc(50% - 35px); right: 5px;";
-    if (position === "top-left") return "top: 5px; right: calc(100% - 315px);";
-    if (position === "top-right") return "top: 5px; right: 5px;";
+      return "top: calc(50% - 35px) !important; right: 5px !important;";
+    if (position === "top-left")
+      return "top: 5px !important; right: calc(100% - 315px) !important;";
+    if (position === "top-right")
+      return "top: 5px !important; right: 5px !important;";
     if (position === "bottom-right")
-      return "top: calc(100% - 75px); right: 5px;";
-    // if (position === "bottom-left")
-    return "top: calc(100% - 75px); right: calc(100% - 315px);";
+      return "top: calc(100% - 75px) !important; right: 5px !important;";
+    if (position === "bottom-left")
+      return "top: calc(100% - 75px) !important; right: calc(100% - 315px) !important;";
   }};
   background-color: ${({ theme }) => theme.colors.black};
   border-radius: 5px;
-  font-size: 1.3rem;
   padding: 5px;
+  overflow: hidden;
   box-shadow: 0px 0px 5px hsl(0, 0%, 0%, 0.5);
   transform: ${({ isOpen }) => (isOpen ? "scale(1)" : "scale(0)")};
-  transform-origin: ${({ isOpen }) => (isOpen ? "left bottom" : "center")};
+  transform-origin: ${({ isOpen, position }) => {
+    if (!isOpen) return "center";
+    return position.replace("-", " ");
+  }};
   transition: transform
       ${({ theme, isOpen }) =>
         isOpen ? `0.5s ${theme.transition.bouncy}` : "0.2s linear"},
