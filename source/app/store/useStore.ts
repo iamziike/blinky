@@ -26,7 +26,7 @@ const useStore = () => {
       const response = (await storage.retrieve(
         POPUP_INTERVAL_STORAGE_KEY
       )) as number;
-      setPopupInterval(response || 4);
+      setPopupInterval(response || 15);
     };
 
     const toastPositionSetter = async () => {
@@ -40,7 +40,7 @@ const useStore = () => {
       const response = (await storage.retrieve(
         POPUP_SCREEN_TIME_STORAGE_KEY
       )) as number;
-      setToastScreenTime(response || 3);
+      setToastScreenTime(response || 2);
     };
 
     // set the state existing already stored in chrome-storage

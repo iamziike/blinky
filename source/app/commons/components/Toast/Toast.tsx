@@ -30,9 +30,9 @@ const StyledToast = styled.div<IsOpen & { position: ToastPosition }>`
     if (position === "top-right")
       return "top: 5px !important; right: 5px !important;";
     if (position === "bottom-right")
-      return "top: calc(100% - 75px) !important; right: 5px !important;";
+      return "top: calc(100% - 85px) !important; right: 5px !important;";
     if (position === "bottom-left")
-      return "top: calc(100% - 75px) !important; right: calc(100% - 315px) !important;";
+      return "top: calc(100% - 85px) !important; right: calc(100% - 315px) !important;";
   }};
   background-color: ${({ theme }) => theme.colors.black};
   border-radius: 5px;
@@ -68,7 +68,7 @@ const StyledToast = styled.div<IsOpen & { position: ToastPosition }>`
     height: 100%;
     width: 100%;
     font-family: monospace !important;
-    font-size: 1.2rem;
+    font-size: 18px;
     color: ${({ theme }) => theme.colors.yellow} !important;
   }
 `;
