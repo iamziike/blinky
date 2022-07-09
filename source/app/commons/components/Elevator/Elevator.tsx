@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Icon from "../Icon/Icon";
@@ -6,7 +5,7 @@ import PreviousButtonIcon from "../../../../assets/arrow_up.svg";
 import NextButtonIcon from "../../../../assets/arrow_down.svg";
 import { NumberString } from "../../../types/types";
 
-type ElevatorWithItems = {
+type ElevatorWithKnownItems = {
   items: { value: NumberString; id: NumberString; isSelected: boolean }[];
   onGetFocusedItem: (id: NumberString) => void;
   currentValue?: never;
@@ -14,7 +13,7 @@ type ElevatorWithItems = {
   onGetPrevValue?: never;
 };
 
-type ElevatorWithCurrentValue = {
+type ElevatorWithUnknownItems = {
   currentValue: NumberString;
   onGetNextValue: VoidFunction;
   onGetPrevValue: VoidFunction;
@@ -22,7 +21,7 @@ type ElevatorWithCurrentValue = {
   onGetFocusedItem?: never;
 };
 
-type ElevatorProps = (ElevatorWithCurrentValue | ElevatorWithItems) &
+type ElevatorProps = (ElevatorWithUnknownItems | ElevatorWithKnownItems) &
   React.HTMLAttributes<HTMLDivElement> & {
     currentValueClassName?: string;
   };
@@ -61,37 +60,27 @@ const Elevator = ({
   onGetPrevValue,
   currentValueClassName,
 }: ElevatorProps) => {
-  const [focusedID, setFocusedID] = useState<NumberString>();
-
   const handlePrevBtnClick = () => {
-    items
-      ? setFocusedID((prev) => {
-          const id = (
-            items.filter(
-              (_, index, itemsArray) => itemsArray[index + 1]?.id === prev
-            )[0] || items[0]
-          ).id!;
-          return id;
-        })
-      : onGetPrevValue();
+    if (!items) return onGetPrevValue();
+
+    items.forEach((item, index, itemsArray) => {
+      if (!item.isSelected) return;
+      if (index === 0)
+        return onGetFocusedItem(itemsArray[itemsArray.length - 1].id);
+      onGetFocusedItem(itemsArray[index - 1].id);
+    });
   };
 
   const handleNextBtnClick = () => {
-    items
-      ? setFocusedID(
-          (prev) =>
-            (
-              items.filter(
-                (_, index, itemsArray) => itemsArray[index - 1]?.id === prev
-              )[0] || items[items.length - 1]
-            ).id!
-        )
-      : onGetNextValue();
-  };
+    if (!items) return onGetNextValue();
 
-  useEffect(() => {
-    if (items && focusedID) onGetFocusedItem(focusedID);
-  }, [focusedID]);
+    items.forEach((item, index, itemsArray) => {
+      if (!item.isSelected) return;
+      if (index === itemsArray.length - 1)
+        return onGetFocusedItem(itemsArray[0].id);
+      onGetFocusedItem(itemsArray[index + 1].id);
+    });
+  };
 
   return (
     <StyledElevator className={className}>

@@ -74,8 +74,6 @@ const Sidebar = () => {
     useStore();
   const { popupInterval, toastPosition, toastScreenTime } = getStore();
 
-  console.log(toastPosition);
-
   const toastPositions = [
     "bottom-left",
     "bottom-right",
@@ -99,8 +97,8 @@ const Sidebar = () => {
   const counterDecrement = (prev: number) =>
     prev && (prev === 1 ? prev : prev - 1);
 
-  const handleToastPositionSelection = (value: NumberString) => {
-    setToastPosition(value as ToastPosition);
+  const handleToastPositionSelection = (position: NumberString) => {
+    setToastPosition(position as ToastPosition);
   };
 
   return (
