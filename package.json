@@ -1,7 +1,7 @@
 {
   "name": "blinky",
   "version": "1.0.0",
-  "description": "A Browser Extension that reminds you to blink you eyes when using your browser",
+  "description": "A Browser Extension that reminds you to blink you eyes",
   "scripts": {
     "clear": "rm -rf .parcel-cache dist",
     "start": "npm run clear && parcel watch source/manifest.json",
@@ -23,7 +23,6 @@
     "@types/chrome": "^0.0.191",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
-    "@types/styled-components": "^5.1.25",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
     "eslint": "^8.18.0",
@@ -34,7 +33,6 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "recoil": "^0.7.4",
-    "styled-components": "^5.3.5"
+    "recoil": "^0.7.4"
   }
 }
