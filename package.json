@@ -5,7 +5,7 @@
   "scripts": {
     "clear": "rm -rf .parcel-cache dist",
     "start": "npm run clear && parcel watch source/manifest.json",
-    "build": "parcel build source/manifest.json"
+    "build": "npm run clear && parcel build source/manifest.json"
   },
   "repository": {
     "type": "git",
