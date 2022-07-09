@@ -1,7 +1,7 @@
 {
   "name": "blinky",
   "version": "1.0.0",
-  "description": "A Browser Extension that reminds you to blink you eyes",
+  "description": "A Browser Extension that reminds you to blink your eyes",
   "scripts": {
     "clear": "rm -rf .parcel-cache dist",
     "start": "npm run clear && parcel watch source/manifest.json",
