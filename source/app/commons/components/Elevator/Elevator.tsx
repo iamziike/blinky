@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 import Icon from "../Icon/Icon";
-import PreviousButtonIcon from "../../../../assets/arrow_up.svg";
-import NextButtonIcon from "../../../../assets/arrow_down.svg";
+import NextButtonIcon from "../../../../assets/arrow_up.svg";
+import PreviousButtonIcon from "../../../../assets/arrow_down.svg";
 import { NumberString } from "../../../types/types";
 
 type ElevatorWithKnownItems = {
@@ -84,17 +84,17 @@ const Elevator = ({
 
   return (
     <StyledElevator className={className}>
-      <StyledIcon onClick={handlePrevBtnClick}>
-        <PreviousButtonIcon />
+      <StyledIcon onClick={handleNextBtnClick}>
+        <NextButtonIcon />
       </StyledIcon>
       <StyledCurrentValue className={currentValueClassName}>
         {items
           ? items.filter((item) => item.isSelected)[0].value
           : currentValue}
       </StyledCurrentValue>
-      <Icon onClick={handleNextBtnClick}>
-        <NextButtonIcon />
-      </Icon>
+      <StyledIcon onClick={handlePrevBtnClick}>
+        <PreviousButtonIcon />
+      </StyledIcon>
     </StyledElevator>
   );
 };
