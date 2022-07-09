@@ -1,25 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Toast from "../commons/components/Toast/Toast";
 import { selectRandom } from "../commons/scripts/helpers";
 import useStore from "../store/useStore";
 
-const App = () => {
-  const [isToastOpen, setIsToastOpen] = useState(false);
-  const { popupInterval, toastPosition, toastScreenTime } =
-    useStore().getStore();
-
-  const handleToastVisibility = () => {
-    setIsToastOpen((prev) => !prev);
-  };
-
-  useEffect(() => {
-    if (isToastOpen === false)
-      setTimeout(handleToastVisibility, popupInterval * 1000);
-  }, [isToastOpen]);
-
-  // Intensionally did create a state
-  const toastTitle = selectRandom([
+const getRandomBlinkText = () =>
+  selectRandom([
     "Have you blinked",
     "Remember To Blink",
     "Try to close your eyes",
@@ -28,11 +14,29 @@ const App = () => {
     "Try to Blink",
   ]);
 
+const App = () => {
+  const [isToastOpen, setIsToastOpen] = useState(false);
+  const { popupInterval, toastPosition, toastScreenTime } =
+    useStore().getStore();
+  const timeoutID = useRef<number>();
+  const toastTitle = useRef(getRandomBlinkText());
+
+  const handleToastVisibility = () => {
+    setIsToastOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    clearTimeout(timeoutID.current);
+    if (!(isToastOpen === false && popupInterval)) return;
+    toastTitle.current = getRandomBlinkText();
+    timeoutID.current = setTimeout(handleToastVisibility, popupInterval * 1000);
+  }, [isToastOpen, popupInterval]);
+
   return (
     <Toast
       isOpen={isToastOpen}
       onClose={handleToastVisibility}
-      title={toastTitle}
+      title={toastTitle.current}
       pauseTime={toastScreenTime}
       position={toastPosition}
     />
