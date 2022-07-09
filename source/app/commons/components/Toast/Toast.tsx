@@ -10,6 +10,7 @@ type ToastProps = {
   position?: ToastPosition;
   onClose: VoidFunction;
   pauseTime: number;
+  className?: string;
 } & IsOpen;
 
 const StyledToast = styled.div<IsOpen & { position: ToastPosition }>`
@@ -32,7 +33,6 @@ const StyledToast = styled.div<IsOpen & { position: ToastPosition }>`
     return "top: calc(100% - 85px); right: calc(100% - 315px);";
   }};
   background-color: ${({ theme }) => theme.colors.black};
-  color: ${({ theme }) => theme.colors.yellow};
   border-radius: 5px;
   font-size: 1.3rem;
   padding: 5px;
@@ -62,6 +62,8 @@ const StyledToast = styled.div<IsOpen & { position: ToastPosition }>`
     align-items: center;
     height: 100%;
     width: 100%;
+    font-family: monospace !important;
+    color: ${({ theme }) => theme.colors.yellow} !important;
   }
 `;
 
@@ -71,6 +73,7 @@ const Toast = ({
   position = "bottom-left",
   pauseTime = 1,
   onClose,
+  className,
 }: ToastProps) => {
   const idRef = useRef<number>();
 
@@ -80,7 +83,7 @@ const Toast = ({
   }, [isOpen]);
 
   return (
-    <StyledToast isOpen={isOpen} position={position}>
+    <StyledToast className={className} isOpen={isOpen} position={position}>
       <Icon
         onClick={() => {
           if (idRef.current) clearTimeout(idRef.current);
