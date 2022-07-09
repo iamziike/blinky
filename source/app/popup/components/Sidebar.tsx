@@ -67,11 +67,14 @@ const StyledElevator = styled(Elevator)<{ currentValueClassName?: string }>`
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [settingsTypeOpen, setSettingsTypeOpen] = useState<
-    "interval" | "popup-position" | null
+    "interval" | "popup-position" | "popup-screen-time" | null
   >(null);
 
-  const { getStore, setPopupInterval, setToastPosition } = useStore();
-  const { popupInterval, toastPosition } = getStore();
+  const { getStore, setPopupInterval, setToastPosition, setToastScreenTime } =
+    useStore();
+  const { popupInterval, toastPosition, toastScreenTime } = getStore();
+
+  console.log(toastPosition);
 
   const toastPositions = [
     "bottom-left",
@@ -92,13 +95,9 @@ const Sidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
 
-  const handlePopupIntervalIncrement = () => {
-    setPopupInterval((prev) => prev && prev + 1);
-  };
-
-  const handlePopupIntervalDecrement = () => {
-    setPopupInterval((prev) => prev && (prev === 1 ? prev : prev - 1));
-  };
+  const counterIncrement = (prev: number) => prev && prev + 1;
+  const counterDecrement = (prev: number) =>
+    prev && (prev === 1 ? prev : prev - 1);
 
   const handleToastPositionSelection = (value: NumberString) => {
     setToastPosition(value as ToastPosition);
@@ -116,7 +115,10 @@ const Sidebar = () => {
         <StyledActions>
           <li onClick={() => setSettingsTypeOpen("interval")}>Interval</li>
           <li onClick={() => setSettingsTypeOpen("popup-position")}>
-            Popup Position
+            Position
+          </li>
+          <li onClick={() => setSettingsTypeOpen("popup-screen-time")}>
+            Screen Time
           </li>
         </StyledActions>
       </StyledComponentEntry>
@@ -131,8 +133,8 @@ const Sidebar = () => {
       >
         <StyledElevator
           currentValue={popupInterval + "s"}
-          onGetNextValue={handlePopupIntervalIncrement}
-          onGetPrevValue={handlePopupIntervalDecrement}
+          onGetNextValue={() => setPopupInterval(counterIncrement)}
+          onGetPrevValue={() => setPopupInterval(counterDecrement)}
         />
       </StyledComponentEntry>
       <StyledComponentEntry
@@ -148,6 +150,21 @@ const Sidebar = () => {
           items={toastPositions}
           onGetFocusedItem={handleToastPositionSelection}
           currentValueClassName="currentValueClassName"
+        />
+      </StyledComponentEntry>
+      <StyledComponentEntry
+        isOpen={settingsTypeOpen === "popup-screen-time"}
+        onClose={() =>
+          setSettingsTypeOpen((prev) =>
+            prev === "popup-screen-time" ? null : "popup-screen-time"
+          )
+        }
+        iconType="go back"
+      >
+        <StyledElevator
+          currentValue={toastScreenTime + "s"}
+          onGetNextValue={() => setToastScreenTime(counterIncrement)}
+          onGetPrevValue={() => setToastScreenTime(counterDecrement)}
         />
       </StyledComponentEntry>
     </StyledSidebar>

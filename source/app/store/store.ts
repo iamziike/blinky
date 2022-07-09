@@ -11,3 +11,8 @@ export const toastPositionAtom = atom({
   key: "toastPositionAtom",
   default: "" as ToastPosition,
 });
+
+export const toastScreenTimeAtom = atom({
+  key: "toastScreenTimeAtom",
+  default: 0,
+});
