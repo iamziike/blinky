@@ -13,9 +13,6 @@ type ToastProps = {
 } & IsOpen;
 
 const StyledToast = styled.div<IsOpen & { position: ToastPosition }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: fixed;
   width: 300px;
   height: 70px;
@@ -56,6 +53,15 @@ const StyledToast = styled.div<IsOpen & { position: ToastPosition }>`
 
   span:active {
     transform: none;
+  }
+
+  p {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
   }
 `;
 
